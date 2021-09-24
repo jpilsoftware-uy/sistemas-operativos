@@ -27,7 +27,7 @@
 
     - name: ssh-key para administrador
       authorized_key:
-        use: administrador
+        user: administrador
         state: present
         key: "{{rsa_key}}"
 

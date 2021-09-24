@@ -1,9 +1,9 @@
 ---
-- hosts: localhost
+- hosts: all
   tasks:
     - cron:
         user: "root"
         minute: "0"
         hour: "0,4,8,12,16,20"
-        job: "/script.sh"
+        job: "/backup_script.sh"
         state: "present"
