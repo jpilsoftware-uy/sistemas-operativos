@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks:
+    - cron:
+        user: "root"
+        minute: "0"
+        hour: "0,4,8,12,16,20"
+        job: "/script.sh"
+        state: "present"

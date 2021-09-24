@@ -1,0 +1,65 @@
+---
+- name: Configurar SSH en
+  hosts: all
+  vars:
+    ssh_port: 53002
+    rsa_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1RWRD2/pKsGwCFrgSrtNrYWhv4EdlbeWv/KbJTEnEgjiMVsDgA8O3zxW9qyP/ZN5oWnrvqs0bbmmuD9PezkSzCLRCBT2S4wNqZKdicGKaBEpNpRgamnRfr4AKhmXZdcFlGMgxm7MUdsJmGX2vGmlTcNZWDgAo3qDKrEIfA5jxOOwcIBtEyiOYRXWbZGlc3RBunZtberqOCC/eajDzSSO2sYF2OrShg/TL73I+dM6rQuz0lN8cnI3Z3nonwuVUQxOc2mxLRz+1wlP3+Npe4ezxg6Fi4pWyG/led6ltN9hVVWK9LACtoeG9L6IqiAtNm8T650qSgr3onHSl/Af4VxvZ Clave para Ansible
+  tasks:
+    - name: Crear usuario de Alumno
+      user:
+        name: usuario
+        password: usuario1234
+        state: present
+        shell: /bin/bash
+        system: no
+        createhome: yes
+        home: /home/usuario
+
+    - name: Crear usuario de administrador
+      user:
+        name: administrador
+        password: admin5302.
+        state: present
+        shell: /bin/bash
+        system: no
+        createhome: yes
+        home: /home/administrador
+
+    - name: ssh-key para administrador
+      authorized_key:
+        use: administrador
+        state: present
+        key: "{{rsa_key}}"
+
+    - name: Deshabilitar login de root remoto
+      ansible.builtin.lineinfile: path=/etc/ssh/sshd_config
+        regexp='#PermitRootLogin'
+        line="PermitRootLogin no"
+        state=present
+      notify:
+        - restart sshd
+
+    - name: Deshabilitar Autenticacion por contraseña
+      ansible.builtin.lineinfile: path=/etc/ssh/sshd_config
+        regexp='#PasswordAuthentication'
+        line="PasswordAuthentication no"
+        state=present
+      notify:
+        - restart sshd
+
+    - name: Cambiar puerto de SSH
+      ansible.builtin.lineinfile: path=/etc/ssh/sshd_config
+        regexp='#Port'
+        line="#Port {{ ssh_port }}"
+        state=present
+      notify:
+        - restart sshd
+
+    - name: Deshabilitar selinux
+      selinux: state=disabled
+
+  handlers:
+    - name: restart sshd
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
