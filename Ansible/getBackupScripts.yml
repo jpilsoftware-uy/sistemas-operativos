@@ -10,5 +10,8 @@
         name: git
         state: latest
 
-    - name: Clone MySQL Backup Script
-      shell: git clone https://github.com/jpilsoftware-uy/sistemas-operativos
+    - name: Clone backup Script for MySQL
+      shell: wget https://raw.githubusercontent.com/jpilsoftware-uy/sistemas-operativos/main/Scripts/backup_sql.sh
+
+    - name: Clone logs backup for Logs
+      shell: wget https://raw.githubusercontent.com/jpilsoftware-uy/sistemas-operativos/main/Scripts/backup_logs.sh
