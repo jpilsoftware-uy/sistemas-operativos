@@ -1,0 +1,14 @@
+---
+- name: Install BackUp Scripts for Logs and SQL - by JPIL Software
+  hosts: all
+  vars:
+    git_passowrd: 
+    git_user: jpilsoftware
+  tasks:
+    - name: Install git
+      yum:
+        name: git
+        state: latest
+
+    - name: Clone MySQL Backup Script
+      shell: git clone https://github.com/jpilsoftware-uy/sistemas-operativos

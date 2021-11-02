@@ -5,5 +5,5 @@
         user: "root"
         minute: "0"
         hour: "0,4,8,12,16,20"
-        job: "/backup_script.sh"
+        job: "/backup_sql.sh"
         state: "present"

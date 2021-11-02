@@ -1,0 +1,37 @@
+---
+- name: Install MySQL with Ansible - by JPIL Software
+  hosts: all
+  tasks:
+  
+    - name: Download wget
+      yum:
+        name: wget
+        state: latest
+
+    - name: Download CoreUtils
+      yum:
+        name: coreutils
+        state: latest
+
+    - name: Download repo for MySQL
+      shell: wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+
+    - name: Add Repo for MySQL
+      shell: rpm -ivh mysql80-community-release-el7-3.noarch.rpm
+
+    - name: Install MySQL
+      yum:
+        name: mysql-server
+        state: installed
+    
+    - name: Enable MySQL
+      ansible.builtin.service:
+        name: mysqld
+        state: started
+
+    - name: Remove MySQL Package
+      shell: rm mysql80-community-release-el7-3.noarch.rpm
+    
+
+
+
