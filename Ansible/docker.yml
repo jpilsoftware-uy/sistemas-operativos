@@ -1,27 +1,28 @@
 ---
-- name: Instalar docker
+- name: Install Docker
   hosts: all
   tasks:
-    - name: Repositorio de docker
-      shell: yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Install Dependencies
+      shell: yum install -y yum-utils device-mapper-persistent-data lvm2
+
+    - name: Repo of docker
+      shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
       args:
         creates: /etc/yum.repos.d/docker-ce.repo
 
-    - name: Instalar docker
+    - name: Install docker
       yum:
-        name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
+        name: docker
         state: latest
 
-    - name: Apagar Firewall
+    - name: Power off Firewall
       systemd:
         name: firewalld
         state: stopped
         enabled: no
 
-    - name: Habilitacion de Docker
+    - name: Start and enable Docker service
       service:
         name: docker
         state: started

@@ -1,9 +1,11 @@
 ---
-- hosts: all
+- name: Set up crontab routines - by JPIL Software
+  hosts: all
   tasks:
-    - cron:
-        user: "root"
-        minute: "0"
-        hour: "0,4,8,12,16,20"
-        job: "/backup_sql.sh"
-        state: "present"
+      - name: Set up crontab routines
+        cron:
+          user: "root"
+          minute: "0"
+          hour: "0,4,8,12,16,20"
+          job: "/root/scripts/backup_sql.sh"
+          state: "present"

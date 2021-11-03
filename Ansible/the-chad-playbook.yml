@@ -1,0 +1,26 @@
+---
+- name: The Real Chad Playbook of ansible get ready for get your anus destroyed by JPIL Software
+  hosts: all
+  tasks:
+
+    - name: Power off Firewall
+      systemd:
+        name: firewalld
+        state: stopped
+        enabled: no
+
+    - name: Install MySQL
+      include_tasks: /root/install_mysql.yml
+
+    - name: Install Docker
+      include_tasks: /root/docker.yml
+
+    - name: Download and place backup scripts
+      include_tasks: /root/getBackupScripts.yml
+
+    - name: Install Crontab routines for the system
+      include_tasks: /root/crontab.yml 
+    
+
+
+        
