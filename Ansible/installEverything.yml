@@ -19,7 +19,5 @@
 
     - name: Install Crontab routines for the system
       include_playbook: crontab.yml 
-    
-
 
         
