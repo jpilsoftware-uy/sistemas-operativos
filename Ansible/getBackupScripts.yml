@@ -1,15 +1,16 @@
 ---
 - name: Install BackUp Scripts for Logs and SQL - by JPIL Software
   hosts: all
+  vars:
+    github_token: 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
+    github_user: jpilsoftware-uy
   tasks:
 
     - name: Create a folder to place scripts
       shell: mkdir -p scripts
 
-    - name: Clone backup Script for MySQL
-      shell: cd scripts && wget https://raw.githubusercontent.com/jpilsoftware-uy/sistemas-operativos/main/Scripts/backup_sql.sh
+    - name: Get backup scripts for mysql
+      shell: cd scripts && wget https://{{github_user}}:{{github_token}}@raw.githubusercontent.com/jpilsoftware-uy/sistemas-operativos/main/Scripts/backup_sql.sh
 
-    - name: Clone logs backup for Logs
-      shell: cd scripts && wget https://raw.githubusercontent.com/jpilsoftware-uy/sistemas-operativos/main/Scripts/backup_logs.sh
-
-      
+    - name: Get backup scripts for logs
+      shell: cd scripts && wget https://{{github_user}}:{{github_token}}@raw.githubusercontent.com/jpilsoftware-uy/sistemas-operativos/main/Scripts/backup_logs_targz.sh

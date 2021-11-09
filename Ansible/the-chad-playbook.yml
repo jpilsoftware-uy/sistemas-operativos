@@ -1,8 +1,7 @@
 ---
-- name: The Real Chad Playbook of ansible get ready for get your anus destroyed by JPIL Software
+- name: This playbook will set-up the entire server with all the tools needed for the hosting of the app - by JPIL Software
   hosts: all
   tasks:
-
     - name: Power off Firewall
       systemd:
         name: firewalld
@@ -10,16 +9,16 @@
         enabled: no
 
     - name: Install MySQL
-      include_tasks: /root/install_mysql.yml
+      include_playbook: install_mysql.yml
 
     - name: Install Docker
-      include_tasks: /root/docker.yml
+      include_playbook: docker.yml
 
     - name: Download and place backup scripts
-      include_tasks: /root/getBackupScripts.yml
+      include_playbook: getBackupScripts.yml
 
     - name: Install Crontab routines for the system
-      include_tasks: /root/crontab.yml 
+      include_playbook: crontab.yml 
     
 
 

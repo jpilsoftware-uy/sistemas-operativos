@@ -2,10 +2,18 @@
 - name: Set up crontab routines - by JPIL Software
   hosts: all
   tasks:
-      - name: Set up crontab routines
+      - name: Set up crontab routines for MySQL
         cron:
           user: "root"
           minute: "0"
-          hour: "0,4,8,12,16,20"
+          hour: "/4"
           job: "/root/scripts/backup_sql.sh"
+          state: "present"
+
+      - name: Set up crontab routines for log files
+        cron:
+          user: "root"
+          minute: "0"
+          hour: "/4"
+          job: "/root/scripts/backup_logs.sh"
           state: "present"

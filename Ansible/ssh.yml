@@ -1,21 +1,11 @@
 ---
-- name: Configurar SSH en
+- name: Config ssh - by JPIL Software
   hosts: all
   vars:
     ssh_port: 53002
     rsa_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1RWRD2/pKsGwCFrgSrtNrYWhv4EdlbeWv/KbJTEnEgjiMVsDgA8O3zxW9qyP/ZN5oWnrvqs0bbmmuD9PezkSzCLRCBT2S4wNqZKdicGKaBEpNpRgamnRfr4AKhmXZdcFlGMgxm7MUdsJmGX2vGmlTcNZWDgAo3qDKrEIfA5jxOOwcIBtEyiOYRXWbZGlc3RBunZtberqOCC/eajDzSSO2sYF2OrShg/TL73I+dM6rQuz0lN8cnI3Z3nonwuVUQxOc2mxLRz+1wlP3+Npe4ezxg6Fi4pWyG/led6ltN9hVVWK9LACtoeG9L6IqiAtNm8T650qSgr3onHSl/Af4VxvZ Clave para Ansible
   tasks:
-    - name: Crear usuario de Alumno
-      user:
-        name: usuario
-        password: usuario1234
-        state: present
-        shell: /bin/bash
-        system: no
-        createhome: yes
-        home: /home/usuario
-
-    - name: Crear usuario de administrador
+    - name: Create administrador user
       user:
         name: administrador
         password: admin5302.
@@ -25,13 +15,16 @@
         createhome: yes
         home: /home/administrador
 
-    - name: ssh-key para administrador
+    - name: ssh-key for administrador
       authorized_key:
         user: administrador
         state: present
         key: "{{rsa_key}}"
 
-    - name: Deshabilitar login de root remoto
+    - name: Give permissions to admin user
+      shell: usermod -aG wheel administrador
+
+    - name: Disable remote login for root user
       ansible.builtin.lineinfile: path=/etc/ssh/sshd_config
         regexp='#PermitRootLogin'
         line="PermitRootLogin no"
@@ -39,7 +32,7 @@
       notify:
         - restart sshd
 
-    - name: Deshabilitar Autenticacion por contraseña
+    - name: Disable password authentication
       ansible.builtin.lineinfile: path=/etc/ssh/sshd_config
         regexp='#PasswordAuthentication'
         line="PasswordAuthentication no"
@@ -47,7 +40,7 @@
       notify:
         - restart sshd
 
-    - name: Cambiar puerto de SSH
+    - name: Change SSH port 
       ansible.builtin.lineinfile: path=/etc/ssh/sshd_config
         regexp='#Port'
         line="#Port {{ ssh_port }}"
@@ -55,7 +48,7 @@
       notify:
         - restart sshd
 
-    - name: Deshabilitar selinux
+    - name: Disable selinux
       selinux: state=disabled
 
   handlers:
